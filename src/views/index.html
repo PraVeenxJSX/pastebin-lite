@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pastebin Lite</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <h1>Pastebin Lite</h1>
+
+  <form id="pasteForm">
+    <textarea
+      name="content"
+      placeholder="Enter your paste here..."
+      required
+    ></textarea>
+
+    <input
+      type="number"
+      name="ttl_seconds"
+      placeholder="TTL (seconds, optional)"
+      min="1"
+    />
+
+    <input
+      type="number"
+      name="max_views"
+      placeholder="Max views (optional)"
+      min="1"
+    />
+
+    <button type="submit">Create Paste</button>
+  </form>
+
+  <div id="result"></div>
+
+  <script>
+    const form = document.getElementById("pasteForm");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const data = {
+        content: form.content.value,
+        ttl_seconds: form.ttl_seconds.value
+          ? Number(form.ttl_seconds.value)
+          : undefined,
+        max_views: form.max_views.value
+          ? Number(form.max_views.value)
+          : undefined,
+      };
+
+      const res = await fetch("/api/pastes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        result.innerHTML = `<p class="error">${json.error}</p>`;
+        return;
+      }
+
+      result.innerHTML = `
+        <p>Paste created!</p>
+        <a href="${json.url}" target="_blank">${json.url}</a>
+      `;
+      form.reset();
+    });
+  </script>
+</body>
+</html>
