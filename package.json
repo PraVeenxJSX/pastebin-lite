@@ -1,15 +1,11 @@
 {
   "name": "pastebin-lite",
   "version": "1.0.0",
-  "description": "A lightweight Pastebin-like application built with Node.js, Express, and MongoDB",
+  "description": "Pastebin Lite application",
   "type": "module",
-  "main": "api/index.js",
   "scripts": {
     "start": "node src/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "dotenv": "^17.2.3",
     "express": "^4.19.2",
